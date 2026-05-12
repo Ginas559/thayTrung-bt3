@@ -1,3 +1,5 @@
+Da lam cau 4: Sử dụng Axios để gọi API của bài tập 02, Redux Hook để quản lý state cho chức năng trên.
+
 Bao Gồm cả FE và BE
 
 Chạy BE: 

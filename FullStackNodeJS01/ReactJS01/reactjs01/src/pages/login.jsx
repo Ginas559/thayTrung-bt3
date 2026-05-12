@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
 import { Button, Col, Divider, Form, Input, notification, Row } from 'antd';
 import { loginApi } from '../util/api';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../components/context/auth.context';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { setAuth } from '../redux/authSlice';
 
 const LoginPage = () => {
     const navigate = useNavigate();
-    const { setAuth } = useContext(AuthContext);
+    const dispatch = useDispatch();
 
     const onFinish = async (values) => {
         const { email, password } = values;
@@ -19,13 +19,13 @@ const LoginPage = () => {
                 message: "LOGIN USER",
                 description: "Success"
             });
-            setAuth({
+            dispatch(setAuth({
                 isAuthenticated: true,
                 user: {
                     email: res?.user?.email ?? "",
                     name: res?.user?.name ?? ""
                 }
-            });
+            }));
             navigate("/");
         } else {
             notification.error({

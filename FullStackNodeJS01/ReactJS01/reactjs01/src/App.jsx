@@ -1,30 +1,32 @@
 import { Outlet } from "react-router-dom";
 import Header from "./components/layout/header";
-import axios from "./util/axios.customize"
-import { useContext, useEffect } from "react"
-import { AuthContext } from "./components/context/auth.context";
+import { useEffect } from "react"
 import { Spin } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { getAccountApi } from "./util/api";
+import { setAuth, setAppLoading } from "./redux/authSlice";
 
 function App() {
-    const { setAuth, appLoading, setAppLoading } = useContext(AuthContext);
+    const dispatch = useDispatch();
+    const appLoading = useSelector((state) => state.auth.appLoading);
 
     useEffect(() => {
         const fetchAccount = async () => {
-            setAppLoading(true);
-            const res = await axios.get(`/v1/api/user`);
+            dispatch(setAppLoading(true));
+            const res = await getAccountApi();
             if (res && !res.message) {
-                setAuth({
+                dispatch(setAuth({
                     isAuthenticated: true,
                     user: {
                         email: res.email,
                         name: res.name
                     }
-                })
+                }));
             }
-            setAppLoading(false);
+            dispatch(setAppLoading(false));
         }
         fetchAccount()
-    }, [])
+    }, [dispatch])
 
     return (
         <div>

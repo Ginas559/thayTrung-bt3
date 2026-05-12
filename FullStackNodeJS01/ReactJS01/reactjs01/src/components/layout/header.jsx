@@ -1,12 +1,19 @@
-import React, { useContext, useState } from 'react';
+import { useState } from 'react';
 import { UsergroupAddOutlined, HomeOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/auth.context';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../redux/authSlice';
 
 const Header = () => {
     const navigate = useNavigate();
-    const { auth, setAuth } = useContext(AuthContext);
+    const dispatch = useDispatch();
+    const auth = useSelector((state) => state.auth);
+    const [current, setCurrent] = useState('home');
+
+    const onClick = (e) => {
+        setCurrent(e.key);
+    };
 
     const items = [
         {
@@ -26,15 +33,9 @@ const Header = () => {
             children: [
                 ...(auth.isAuthenticated ? [{
                     label: <span onClick={() => {
-                        localStorage.clear("access_token");
+                        localStorage.removeItem("access_token");
                         setCurrent("home");
-                        setAuth({
-                            isAuthenticated: false,
-                            user: {
-                                email: "",
-                                name: ""
-                            }
-                        })
+                        dispatch(logout());
                         navigate("/");
                     }}>Đăng xuất</span>,
                     key: 'logout',
@@ -47,11 +48,6 @@ const Header = () => {
             ],
         },
     ];
-
-    const [current, setCurrent] = useState('mail');
-    const onClick = (e) => {
-        setCurrent(e.key);
-    };
 
     return <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />;
 };
