@@ -1,5 +1,17 @@
 Bao Gồm cả FE và BE
 
+Chạy BE: 
+    cd ExpressJS01
+    npm install
+    npm start
+
+Chạy FE: 
+    cd ReactJS01/reactjs01
+    npm install
+    npm run dev
+
+*note: MONGO_DB_URL=mongodb://localhost:27017/fullstack02
+
 Các link:
 
 http://localhost:5173/
